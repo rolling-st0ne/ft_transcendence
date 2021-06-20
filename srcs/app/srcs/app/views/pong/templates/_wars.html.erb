@@ -1,0 +1,231 @@
+<script type="text/template" id="war-template">
+  <div class="row" style="max-width: 1000px; min-width: 300px">
+    <div class="col-4">
+      <%%=`<a class="link-light" href="#/guilds/${guild1_id}">`%><%%= g1_name %></a>
+      &nbsp;vs.&nbsp;
+      <%%=`<a class="link-light" href="#/guilds/${guild2_id}">`%><%%= g2_name %></a>
+     </div>
+    <div class="col-1"><%%= stake %></div>
+    <div class="col-1"><%%= start %></div>
+    <div class="col-1"><%%= end %></div>
+    <div class="col-2"><%%= finished ? (winner ? (winner == 1 ? g1_name : g2_name) : 'even') : '-' %></div>
+    <div class="col-2"> <button type="button" class="btn btn-light options-button join" id="more-button">more info</button></div>
+  </div>
+</script>
+
+<script type="text/template" id="wars-template">
+  <h1>Wars <button type="button" class="button-sm" id="refresh-button">
+    <%= show_svg('refresh.svg') %></button></h1>
+  <div class="row" style="max-width: 1000px; min-width: 300px">
+    <div class="col-4">Guilds</div>
+    <div class="col-1">Stake</div>
+    <div class="col-1">Start</div>
+    <div class="col-1">End</div>
+    <div class="col-2">Winner</div>
+  </div>
+</script>
+
+  <script type="text/template" id="war-invite-template">
+    <div class="row" style="max-width: 1000px; min-width: 300px">
+      <div class="col-2" <%%= winner == 'invite' ? '' : 'style="display:none"' %>>
+        <%%=`<a class="link-light" href="#/guilds/${guild1_id}">`%><%%= g1_name %></a>
+      </div>
+    <div class="col-2" <%%= winner == 'request' ? '' : 'style="display:none"' %>>
+        <%%=`<a class="link-light" href="#/guilds/${guild2_id}">`%><%%= g2_name %></a>
+    </div>
+      <div class="col-1"><%%= stake %></div>
+      <div class="col-1"><%%= start %></div>
+      <div class="col-1"><%%= end %></div>
+      <div class="col-3" <%%= winner == 'invite' ? '' : 'style="display:none"' %>> <button type="button" class="btn btn-success options-button" id="accept-button">accept</button>
+        <button type="button" class="btn btn-danger options-button" id="decline-button">decline</button></div>
+      <div class="col-2" <%%= winner == 'request' ? '' : 'style="display:none"' %>> <button type="button" class="btn btn-danger options-button" id="decline-button">cancel request</button></div>
+      <div class="col-2"> <button type="button" class="btn btn-light options-button join" id="more-button">more info</button></div>
+    </div>
+  </script>
+
+<script type="text/template" id="war-invites-template">
+    <h1>War declarations <button type="button" class="button-sm" id="refresh-button">
+      <%= show_svg('refresh.svg') %></button></h1>
+    <div class="row" style="max-width: 1000px; min-width: 300px">
+      <div class="col-2">Opposite guild</div>
+      <div class="col-1">Stake</div>
+      <div class="col-1">Start</div>
+      <div class="col-1">End</div>
+    </div>
+</script>
+
+<script type="text/template" id="war-profile-template">
+  <h1><button type="button" class="button-sm button-back" id="back-button"
+              onclick="window.history.back();">
+    <%= show_svg('arrow-left.svg') %>
+  </button>
+    War
+    <button type="button" class="button-sm button-refresh" id="refresh-button">
+      <%= show_svg('refresh.svg') %>
+    </button>
+  </h1>
+  <div class="row">
+    <div class="col-3"> <%%=`<a class="link-light" href="#/guilds/${guild1_id}">`%><%%= g1_name %></a></div>
+    <div class="col-1">&nbsp;vs.&nbsp;</div>
+    <div class="col-3"> <%%=`<a class="link-light" href="#/guilds/${guild2_id}">`%><%%= g2_name %></a></div>
+  </div>
+<div <%%=accepted ? '' : 'style="display:none"' %>>
+  <div class="row">
+    <div class="col-3"><%%= g1_score %> &nbsp;points</div>
+    <div class="col-1">&nbsp;&nbsp;&nbsp;</div>
+    <div class="col-3"><%%= g2_score %> &nbsp;points</div>
+  </div>
+  <div class="row">
+    <div class="col-3"><%%= g1_matches_won %> &nbsp;matches won</div>
+    <div class="col-1">&nbsp;&nbsp;&nbsp;</div>
+    <div class="col-3"><%%= g2_matches_won %> &nbsp;matches won</div>
+  </div>
+  <div class="row">
+    <div class="col-3"><%%= g1_matches_unanswered %> &nbsp;matches unanswered</div>
+    <div class="col-1">&nbsp;&nbsp;&nbsp;</div>
+    <div class="col-3"><%%= g2_matches_unanswered %> &nbsp;matches unanswered</div>
+  </div>
+  <br>
+  <div class="row"><div class="col-3">Matches in total: &nbsp;<%%= matches_total %></div></div>
+  <div class="row" <%%=finished ? '' : 'style="display:none"' %>><div class="col-3">Winner: &nbsp;<%%= winner ? (winner == 1 ? g1_name : g2_name) : 'even' %></div></div>
+  </div>
+  <br>
+  <div class="row"><div class="col-3">Stake: &nbsp;<%%= stake %></div></div>
+  <div class="row"><div class="col-9">Start: &nbsp;<%%= start %></div></div>
+  <div class="row"><div class="col-9">End: &nbsp;<%%= end %></div></div>
+  <div class="row"><div class="col-9" <%%= wartime_start == wartime_end ? 'style="display:none"' : ''%>>Wartime: &nbsp;<%%= wartime_start %> &nbsp;-&nbsp; <%%= wartime_end %></div></div>
+  <div class="row"><div class="col-9" <%%= wartime_start == wartime_end ? '' : 'style="display:none"'%>>Wartime: &nbsp;unlimited</div></div>
+  <div class="row"><div class="col-3">Wait time: &nbsp;<%%= wait_minutes %>&nbsp;minutes</div></div>
+  <div class="row"><div class="col-3">Unanswered calls permitted: &nbsp;<%%= max_unanswered %></div></div>
+  <br>
+  <div class="row"><div class="col-3">Included match types:</div></div>
+  <ul class="options">
+    <li class="w"><i class="material-icons">done</i>duels</li>
+    <%%=ladder ?  '<li class="w"><i class="material-icons">done</i>ladder</li>' : ''%>
+    <%%=tournament ?  '<li class="w"><i class="material-icons">done</i>tournaments</li>' : ''%>
+  </ul>
+  <div class="row" <%%=!accepted && winner == 'invite' ? '' : 'style="display:none"' %>>
+    <div class="col-1"> <button type="button" class="btn btn-success options-button" id="accept-button">accept</button></div>
+    <div class="col-1"> <button type="button" class="btn btn-danger options-button" id="decline-button">decline</button></div>
+  </div>
+  <div class="col-2" <%%=!accepted && winner == 'request' ? '' : 'style="display:none"' %>> <button type="button" class="btn btn-danger options-button" id="decline-button">cancel request</button></div>
+</script>
+
+<script type="text/template" id="war-modal-template">
+  <div class="modal fade show" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog" style="border-radius: 8px; background: #282828">
+      <div class="modal-content" style="background: #282828">
+        <div class="modal-header" style="border: none; background: #282828">
+          <div style="  display: inline-block; width: 100%; box-sizing: border-box;">
+            <div style=" float: left; clear: right">
+              <h4 class="modal-title">War declaration </h4>
+              <h6>to the <%%= name %></h6>
+            </div>
+            <button style="float:right" type="button" class="btn-close btn-close-white" ></button>
+          </div>
+        </div>
+        <form id="war-form">
+        <div class="modal-body">
+          <div class="input-group input-group-sm mb-3" style="margin-bottom: 0!important;">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputWager">Wager Points:</span>
+            </div>
+            <input id="stake" type="number" min="1" class="form-control" placeholder="1 point or more" required/>
+          </div>
+          <p style="font-size: small">Both sides must have enough points to bet!</p>
+
+          <div class="input-group input-group-sm mb-3" style="margin-bottom: 0!important;">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputUnans">Max number of unanswered calls per day:</span>
+            </div>
+            <input id="max-unanswered"  type="number" min="0" class="form-control">
+          </div>
+          <p style="font-size: small">(default: 5)</p>
+
+          <div class="input-group input-group-sm mb-3" style="margin-bottom: 0!important;">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputWt">Max wait for call time:</span>
+            </div>
+            <input id="wait-time" type="number" min="1" max="1440" class="form-control" placeholder="from 1 to 1440 (=24h)">
+          </div>
+          <p style="font-size: small">(in minutes, default: 10)<br>
+            If no one of the other guild answer the match call after a this amount of time, the match is automatically won
+          </p>
+
+          <div style="margin-top: 20px">
+            <div class="from-div">War starts</div>
+            <div class="to-div">War ends</div>
+            <input id="war-start" class="from-div" data-format="dd/MM/yyyy hh:mm:ss" placeholder="from" type="datetime-local" required/>
+            <input id="war-end" class="to-div" data-format="dd/MM/yyyy hh:mm:ss" placeholder="to" type="datetime-local" required/>
+            <p style="font-size: small">(start must be in the future, end - 15 min or more from start) </p>
+          </div>
+
+          <div style="margin-top: 20px">
+            Select War hours<br>
+            <input type="time" data-format="hh:mm:ss" id="wartime-start" class="from-div" placeholder="from">
+            <input type="time" data-format="hh:mm:ss" id="wartime-end" class="to-div" placeholder="to">
+            <p style="font-size: small">(for wars 24 h or longer: the period of day (1 h or more) when guilds can ask for a fight, default: 00:00; if both are empty there would be now limitations </p>
+          </div>
+
+          <label for="timezone">Select timezone</label>
+          <select name="timezone_offset" id="timezone" class="span5">
+            <option value=" -1200">(GMT -12:00) Eniwetok, Kwajalein</option>
+            <option value=" -11:00">(GMT -11:00) Midway Island, Samoa</option>
+            <option value=" -10:00">(GMT -10:00) Hawaii</option>
+            <option value=" -0950">(GMT -9:30) Taiohae</option>
+            <option value=" -0900">(GMT -9:00) Alaska</option>
+            <option value=" -0800">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+            <option value=" -0700">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+            <option value=" -0600">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+            <option value=" -0500">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+            <option value=" -0450">(GMT -4:30) Caracas</option>
+            <option value=" -0400">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+            <option value=" -0350">(GMT -3:30) Newfoundland</option>
+            <option value=" -0300">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+            <option value=" -0200">(GMT -2:00) Mid-Atlantic</option>
+            <option value=" -0100">(GMT -1:00) Azores, Cape Verde Islands</option>
+            <option value=" %2B0000">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+            <option value=" %2B0100">(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+            <option value=" %2B0200">(GMT +2:00) Kaliningrad, South Africa</option>
+            <option value=" %2B0300" selected="selected">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+            <option value=" %2B0350">(GMT +3:30) Tehran</option>
+            <option value=" %2B0400">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+            <option value=" %2B0450">(GMT +4:30) Kabul</option>
+            <option value=" %2B0500">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+            <option value=" %2B0550">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+            <option value=" %2B0575">(GMT +5:45) Kathmandu, Pokhara</option>
+            <option value=" %2B0600">(GMT +6:00) Almaty, Dhaka, Colombo</option>
+            <option value=" %2B0650">(GMT +6:30) Yangon, Mandalay</option>
+            <option value=" %2B0700">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+            <option value=" %2B0800">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+            <option value=" %2B0875">(GMT +8:45) Eucla</option>
+            <option value=" %2B0900">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+            <option value=" %2B0950">(GMT +9:30) Adelaide, Darwin</option>
+            <option value=" %2B1000">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+            <option value=" %2B1050">(GMT +10:30) Lord Howe Island</option>
+            <option value=" %2B1100">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+            <option value=" %2B1150">(GMT +11:30) Norfolk Island</option>
+            <option value=" %2B1200">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+            <option value=" %2B1275">(GMT +12:45) Chatham Islands</option>
+            <option value=" %2B1300">(GMT +13:00) Apia, Nukualofa</option>
+            <option value=" %2B1400">(GMT +14:00) Line Islands, Tokelau</option>
+          </select>
+
+          <ul class="options" style="margin-top: 20px">Include matches of types:
+            <li class="w"><i class="material-icons">done</i>&nbsp;Duel</li>
+            <li class="w"> <input type="checkbox" id="include-tournament">&nbsp;Tournament</li>
+            <li class="w"><input type="checkbox" id="include-ladder">&nbsp;Ladder</li>
+          </ul>
+        </div>
+        <div class="modal-footer modal-confirm justify-content-center">
+          <button class="btn btn-secondary btn-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-confirm">Declare war</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+</script>
+
+

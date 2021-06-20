@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyText
+  direct_room: one
+  user: one
+  read: false
+
+two:
+  content: MyText
+  direct_room: two
+  user: two
+  read: false

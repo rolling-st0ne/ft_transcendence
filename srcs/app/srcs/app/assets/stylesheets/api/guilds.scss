@@ -1,0 +1,123 @@
+.open-button {
+    background-color: #60c7c1;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    bottom: 23px;
+    right: 28px;
+    width: 100px;
+    height: 100px;
+    opacity: 0.8;
+    border-radius: 50%;
+}
+
+.options-button {
+  height: 20px;
+  line-height: 10px;
+  font-size: 80%;
+  border-radius: 3px !important;
+  opacity: 0.8;
+  margin-left: 20px
+}
+
+.join {
+  background-color:  #60c7c1;
+  border-color :  #60c7c1;
+  color : white;
+}
+
+.form-popup {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 15px;
+    z-index: 9;
+}
+
+.form-container input[type=text], .form-container input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    background: #f1f1f1;
+    color: #282828;
+}
+
+.form-container input[type=text]:focus, .form-container input[type=password]:focus, .form-container input[type=text]:hover, .form-container input[type=password]:hover  {
+    background: #ddd;
+    outline: none;
+    color: #282828;
+}
+
+.form-container .btn {
+    cursor: pointer;
+    opacity: 0.8;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 16px 20px;
+    margin-bottom:10px;
+    border-radius: 8px;
+}
+
+.form-container {
+  width: 100%;
+  border: none;
+  color: white;
+  background-color: #b3b1b1;
+  max-width: 300px;
+  padding: 10px;
+}
+
+.form-container .btn:hover, .open-button:hover .options-button:hover {
+    opacity: 1;
+}
+
+.modal-footer {
+  border: none;
+}
+
+.modal-confirm .modal-footer {
+  justify-content: center;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 13px;
+  padding: 10px 15px 25px;
+}
+
+.modal-confirm .btn, .modal-confirm .btn:active {
+  color: #fff;
+  border-radius: 4px;
+  background: #60c7c1;
+  text-decoration: none;
+  transition: all 0.4s;
+  line-height: normal;
+  min-width: 120px;
+  border: none;
+  min-height: 40px;
+  margin: 0 5px;
+}
+.modal-confirm .btn-secondary {
+  background: #c1c1c1;
+}
+.modal-confirm .btn-secondary:hover, .modal-confirm .btn-secondary:focus {
+  background: #a8a8a8;
+}
+.modal-confirm .btn-danger {
+  background: #f15e5e;
+}
+.modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
+  background: #ee3535;
+}
+
+.from-div {
+  width: 48%;
+  float: left;
+}
+
+.to-div {
+  width: 48%;
+  float: right;
+}

@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+
+  postgresql:
+    build: ./srcs/database/
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+
+  ruby:
+    build: ./srcs/app/
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0' -e production"
+    environment:
+      FT_ID: insert_42oauth_id_here
+      FT_SECRET: insert_42oauth_secret_here
+      OTP_SECRETKEY: 21987006370d785e1442c0571b02e0e9
+      RAILS_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgresql

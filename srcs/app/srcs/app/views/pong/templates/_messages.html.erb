@@ -1,0 +1,36 @@
+<script type="text/template" id="message-template">
+  <div class="message" data-user-id="<%%= user_id %>">
+    <table>
+        <tr style="vertical-align:top;">
+          <th><img class="user_icon" width="35px" height="35px" src="<%%= avatar %>" style="margin-bottom: 10px"></th>
+          <th><span <%%=user_guild_anagram ? 'style="color:gray"' : 'style="display:none"'%>> &nbsp;[<%%=user_guild_anagram%>]</span></th>
+          <th id="user-name">
+            <%%= displayname %>:
+          </th>
+          <th id="message-content"> <%%= content %> </th>
+          <th <%%= admin ? '' : 'style="display:none"' %>>
+            <div id="make_adm">⠀ADM</div>
+          </th>
+          <th <%%= admin ? '' : 'style="display:none"' %>>
+            <div style="width: 7%; float:left;" id="block_user_room"><%= show_svg('block.svg') %></div>
+          </th>
+        </tr>
+    </table>
+  </div>
+</script>
+
+<script type="text/template" id="messages-template">
+    <table>
+      <t><h1 id="room-name"></h1></t>
+      <td> <div id="change_password" <%%= owner_id == current_user_id ? '' : 'style="display:none"' %>> Change password⠀⠀</td>
+      <td>
+        <input id="new_password_input" type="password" class="form-control" style="display:none" autocomplete="off"\>
+      </td>
+    </table>
+    <br>
+    <div id="messages" <%%= admin ? 'class="messages_admin"' : 'class="messages_user"'%> >
+    </div>
+    <div id="div-chat-input">
+        <input id="chat-input" type="text" class="form-control" autocomplete="off"\>
+    </div>
+</script>

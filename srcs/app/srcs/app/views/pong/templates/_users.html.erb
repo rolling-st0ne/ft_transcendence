@@ -1,0 +1,404 @@
+<script type="text/template" id="singleuser-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td class="users-displayname"><label><a id="displayname"><%%= displayname %></a></label></td>
+  <td><label><%%= wins %></label></td>
+  <td><label><%%= loses %></label></td>
+  <td><label><%%= elo %></label></td>
+  <td><label><%%= nickname %></label></td>
+</script>
+
+<script type="text/template" id="singlematch-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+      <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+      width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td width="60%" class="users-displayname"><label><%%= displayname %></label></td>
+  <td <%%= (status == 3 && winner == main_id) ? '' : 'style="display:none"' %> ><label style="color:green;margin-right:10px">Won</label></td>
+  <td <%%= (status == 3 && winner != main_id) ? '' : 'style="display:none"' %> ><label style="color:red;margin-right:10px">Lost</label></td>
+  <td <%%= (status == 3) ? '' : 'style="display:none"' %> ><label><%%= first_player_score %>:<%%= second_player_score %></label></td>
+  <td <%%= (status == 2) ? '' : 'style="display:none"' %> ><label style="color:yellow"> in match </label></td>
+  <td width="8%">
+    <button class="btn btn-outline-danger btn-profile-actions" <%%= (status == 1) && first_player_id == main_id ? '' : 'style="display:none"' %> <%%= banned ? 'disabled' : '' %>>
+      <div class="cancel-invite-button">
+        Cancel
+      </div>
+    </button>
+  </td>
+  <td width="8%">
+    <button class="btn btn-outline-secondary btn-profile-actions" <%%= (status == 2) ? '' : 'style="display:none"' %> <%%= banned ? 'disabled' : '' %>>
+      <div class="spectate-match-button">
+        Spectate
+      </div>
+    </button>
+  </td>
+  <td width="10%">
+    <button class="btn btn-outline-success btn-profile-actions" <%%= (status == 1) && first_player_id != main_id ? '' : 'style="display:none"' %> <%%= banned ? 'disabled' : '' %>>
+      <div class="accept-match-button">Accept</div>
+    </button>
+  </td>
+  <td width="8%">
+  <button class="btn btn-outline-danger btn-profile-actions" <%%= (status == 1) && first_player_id != main_id ? '' : 'style="display:none"' %> <%%= banned ? 'disabled' : '' %>>
+    <div class="decline-match-button">
+      Decline
+    </div>
+  </button>
+  </td>
+</script>
+
+<script type="text/template" id="friends-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td width="60%" class="users-displayname"><label><%%= displayname %></label></td>
+  <td>
+    <button class="btn btn-outline-danger btn-profile-actions" <%%= (status == "friend" && current_user_id == main_id) ? '' : 'style="display:none"' %> <%%= banned ? 'disabled' : '' %>>
+      <div class="remove-friend-button">
+        Remove
+      </div>
+    </button>
+  </td>
+  <td>
+    <button class="btn btn-outline-success btn-profile-actions" <%%= (status == "no" && current_user_id == main_id) ? '' : 'style="display:none"' %> <%%= banned ? 'disabled' : '' %>>
+      <div class="accept-friend-button">
+        Accept Friend
+      </div>
+    </button>
+  </td>
+</script>
+
+<script type="text/template" id="users-template">
+  <h1>Ladder <button type="button" class="button-sm button-refresh" id="refresh-button">
+    <%= show_svg('refresh.svg') %></button>
+    <button class="btn btn-outline-primary find-match-button">
+      Find match
+    </button>
+  </h1>
+  <table id="users-table" border-spacing="20px" padding="0 2em 1em 0">
+    <tr><th></th><th></th>
+      <th class="users-displayname">Display name</th>
+      <th>Wins</th>
+      <th>Loses</th>
+      <th>Rating</th>
+      <th>Intra nickname</th></tr>
+  </table>
+</script>
+
+<script type="text/template" id="userlist-template">
+  <h1>Users <button type="button" class="button-sm button-refresh" id="refresh-button">
+    <%= show_svg('refresh.svg') %></button>
+  </h1>
+  <table id="users-table" border-spacing="20px" padding="0 2em 1em 0">
+    <tr><th></th><th></th>
+      <th class="users-displayname">Display name</th>
+      <th>Wins</th>
+      <th>Loses</th>
+      <th>Rating</th>
+      <th>Intra nickname</th></tr>
+  </table>
+</script>
+
+<script type="text/template" id="user-profile-template">
+  <h1><button type="button" class="button-sm button-back" id="back-button"
+              onclick="window.history.back();">
+      <%= show_svg('arrow-left.svg') %>
+    </button>
+    Profile
+    <button type="button" class="button-sm button-refresh" id="refresh-button">
+      <%= show_svg('refresh.svg') %>
+    </button>
+  </h1>
+  <div class="container">
+    <div class="row g-2">
+      <div class="col-md-4" style="max-height: 550px;">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img class="rounded-circle user_avatar" width="150px" src="<%%= avatar_url %>" alt="avatar">
+              <div class="mt-3">
+                <h4 class="profile-displayname"><%%= displayname %></h4>
+                <p class="text-secondary mb-1"><%%= online ? 'Online' : 'last seen ' + last_seen_at %></p>
+                <p class="text-muted font-size-sm">
+                  <%%= guild_accepted ? `<a href="#/guilds/${guild_id}" style="text-decoration: inherit; color: inherit;">[${guild.anagram}] ${guild.name}</a>` : ''%>
+                </p>
+                <p <%%= banned || is_current ? 'style="display:none"' : '' %>>
+                  <button class="btn btn-outline-success btn-profile-actions add-friend-button">
+                    Add Friend
+                  </button>
+                  <button id="message_btn" class="btn btn-outline-primary btn-profile-actions">
+                    Message
+                  </button>
+                  <button class="btn btn-outline-warning btn-profile-actions invite-to-battle">
+                    Invite to Battle
+                  </button>
+                  <button class="btn btn-outline-light btn-profile-actions invite-to-guild" <%%= can_invite && !guild_accepted ? '' : 'style="display:none"' %>>
+                    Invite to Guild
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mt-3">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <div class="mb-0"><%= show_svg('42_Logo.svg') %> Intra</div>
+              <span class="text-secondary">
+                <a href="https://profile.intra.42.fr/users/<%%= nickname %>"
+                   target="_blank" style="text-decoration: inherit; color: inherit;"><%%= nickname %></a>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="card-title">Badges/Roles</h5>
+            <div class="profile-badges">
+              <span class="badge rounded-pill bg-primary" <%%= is_current ? '' : 'style="display:none"' %>>
+                You
+              </span>
+              <span class="badge rounded-pill bg-owner text-dark" <%%= owner ? '' : 'style="display:none"' %>>
+                Server owner
+              </span>
+              <span class="badge rounded-pill bg-admin text-dark" <%%= admin ? '' : 'style="display:none"' %>>
+                Admin
+              </span>
+              <span class="badge rounded-pill bg-danger text-dark" <%%= banned ? '' : 'style="display:none"' %>>
+                Banned
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card" style="max-height: 550px;">
+          <div class="card-body">
+            <h5 class="card-header card-title">Stats</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <label class="mb-0">Win/Lose ratio</label>
+                <span class="text-secondary">
+                    <%%= wins+loses === 0 ? 0 : ((wins/(wins+loses))*100).toFixed(1) %>% (<%%= wins %>/<%%= loses %>)
+                  </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <label class="mb-0">Rating</label><span class="text-secondary"><%%= elo %></span>
+              </li>
+            </ul>
+            <hr>
+            <h6 class="card-header card-title">Duels</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <label class="mb-0">Won</label><span class="text-secondary"><%%= duels_winner %></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <label class="mb-0">Total</label><span class="text-secondary"><%%= duels_total %></span>
+              </li>
+            </ul>
+            <hr>
+            <h6 class="card-header card-title">Ladder tournaments</h6>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <label class="mb-0">Won</label><span class="text-secondary"><%%= tournament_winner %></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                <label class="mb-0">Total</label><span class="text-secondary"><%%= tournament_total %></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card" style="max-height: 550px;">
+          <div class="card-body overflow-auto">
+            <h5 class="card-header card-title">Friends (<%%= number_of_friends %>)</h5>
+              <table id="friends-table" border-spacing="20px" padding="0 2em 1em 0">
+              <tr><th></th><th></th>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" <%%=is_current && !guild_accepted ? '' : 'style="display:none"' %>>
+        <div class="card" style="max-height: 550px;">
+          <div class="card-body overflow-auto">
+            <h5 class="card-header card-title" >
+            <%%=`<a class="link-light" href="#/users/${id}/guild_invitations">Guild invitations</a>`%>
+             (<%%= guild_invites_counter %>)
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-header card-title">Match History</h5>
+              <table id="matches-table"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/template" id="invite-user-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <!--  <td><label><%%= id %></label></td>-->
+  <td><label><a class="link-light" style="cursor: pointer" id="displayname"><%%= displayname %></a></label></td>
+  <!--  <td><label><%%= email %></label></td>-->
+  <td><label><%%= wins %></label></td>
+  <td><label><%%= loses %></label></td>
+  <td><label><%%= elo %></label></td>
+  <td><label><%%= nickname %></label></td>
+  <!--  %if already invited%-->
+  <!-- <div class="col-1"> <button type="button" class="btn btn-danger options-button" id="invite-button">cancel invite</button></div>-->
+  <!--  %else%-->
+  <td> <button type="button" class="btn btn-light options-button invite" id="invite-button">invite</button></td>
+  <!--  %end%-->
+</script>
+
+<script type="text/template" id="invited-user-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td><label><a class="link-light" style="cursor: pointer" id="displayname"><%%= displayname %></a></label></td>
+  <td><label><%%= wins %></label></td>
+  <td><label><%%= loses %></label></td>
+  <td><label><%%= elo %></label></td>
+  <td><label><%%= nickname %></label></td>
+  <td><button type="button" class="btn btn-danger options-button" id="cancel-invite-button">cancel invite</button></td>
+</script>
+
+<script type="text/template" id="guild-request-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td><label><a class="link-light" style="cursor: pointer" id="displayname"><%%= displayname %></a></label></td>
+  <td><label><%%= wins %></label></td>
+  <td><label><%%= loses %></label></td>
+  <td><label><%%= elo %></label></td>
+  <td><label><%%= nickname %></label></td>
+  <td><button type="button" class="btn btn-success options-button" id="accept-button">accept</button></td>
+  <td><button type="button" class="btn btn-danger options-button" id="decline-button">decline</button></td>
+</script>
+
+<script type="text/template" id="guildmember-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td><label><a class="link-light" style="cursor: pointer" id="displayname"><%%= displayname %></a></label></td>
+  <td><label><%%= guild_master ? 'master' : guild_officer ? 'officer' : '-'%></label></td>
+  <td><label><%%= wins %></label></td>
+  <td><label><%%= loses %></label></td>
+  <td><label><%%= elo %></label></td>
+  <td><label><%%= nickname %></label></td>
+</script>
+
+<script type="text/template" id="guildmember-kick-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td><label ><a class="link-light" style="cursor: pointer" id="displayname"><%%= displayname %></a></label></td>
+  <td><label><%%= guild_master ? 'master' : guild_officer ? 'officer' : '-'%></label></td>
+  <td><label><%%= wins %></label></td>
+  <td><label><%%= loses %></label></td>
+  <td><label><%%= elo %></label></td>
+  <td><label><%%= nickname %></label></td>
+  <td><button type="button" class="btn btn-danger options-button" id="kick-button">kick</button></td>
+</script>
+
+<script type="text/template" id="guildmember-edit-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td><label ><a class="link-light" style="cursor: pointer" id="displayname"><%%= displayname %></a></label></td>
+  <td><label><%%= guild_master ? 'master' : guild_officer ? 'officer' : '-'%></label></td>
+  <td><label><%%= wins %></label></td>
+  <td><label><%%= loses %></label></td>
+  <td><label><%%= elo %></label></td>
+  <td><label><%%= nickname %></label></td>
+  <td><button type="button" class="btn btn-danger options-button" id="kick-button">kick</button></td>
+  <td><button type="button" class="btn btn-light options-button" id="to-master-button">promote to master</button></td>
+  <td>
+    <button type="button" class="btn btn-light options-button" id="demote-button" <%%= guild_officer ?  '' : 'style="display:none"'%> >demote</button>
+    <button type="button" class="btn btn-light options-button" id="to-officer-button" <%%= guild_officer ? 'style="display:none"' : '' %>>promote to officer</button>
+  </td>
+</script>
+
+<script type="text/template" id="guildmembers-template">
+  <h1>Guild members <button type="button" class="button-sm button-refresh" id="refresh-button">
+    <%= show_svg('refresh.svg') %></button></h1>
+  <table id="users-table" border-spacing="20px" padding="0 2em 1em 0">
+    <tr><th></th><th></th>
+      <th>Display name</th>
+      <th>Rank</th>
+      <th>Wins</th>
+      <th>Loses</th>
+      <th>Rating</th>
+      <th>Intra nickname</th></tr>
+  </table>
+</script>
+
+<script type="text/template" id="to-master-modal-confirm-template">
+  <div class="modal fade show" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #090909">
+        <div class="modal-header" style="border-bottom-color: #111111;">
+          <h5 class="modal-title">
+            You are about to promote <%%= displayname %> to master
+          </h5>
+        </div>
+        <div class="modal-body">
+          <p>
+            Only one master in the guild allowed<br>
+            You'll become unranked member if continue
+          </p>
+        </div>
+        <div class="modal-footer" style="border-top-color: #111111;">
+          <button type="button" class="btn btn-dark btn-cancel">Cancel</button>
+          <button type="button" class="btn btn-danger btn-confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+</script>

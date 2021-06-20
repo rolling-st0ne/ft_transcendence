@@ -1,0 +1,37 @@
+// Place all the styles related to the api/tournaments controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+table#tournaments-table {
+  border: 5px transparent;
+}
+
+table#tournaments-table th, table#tournaments-table tr {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+#tournaments-table td {
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+}
+
+table#tournament-users-table {
+  border: 5px transparent;
+}
+
+table#tournament-users-table th, table#tournament-users-table tr {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+table#tournament-users-table td {
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+}
+
+button.btn-nodisplay {
+  display: none;
+}

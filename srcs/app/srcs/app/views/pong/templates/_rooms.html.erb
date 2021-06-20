@@ -1,0 +1,49 @@
+<script type="text/template" id="room-template">
+  <a class="room-click" href="#/room_<%%= id %>">
+    <div class="card mb-2">
+      <div style="width: 3%; float:left; margin-top: 2.2%;" class="lock_icon"><div class="lock" <%%= password_present? '' : 'style="display:none"' %>><%= show_svg('lock.svg') %></div></div>
+      <div style="width: 3%; float:left; margin-top: 2.2%;" class="lock_icon"><div class="private" <%%= private? '' : 'style="display:none"' %>><%= show_svg('private.svg') %></div></div>
+      <div style="width: 93%; float:right;%;"><p class="room_name"><%%= name %></p></th>
+      <td><input style="display:none; pointer-events: none; cursor: default;" class="form-control" type="password" id="input-room-password_<%%= id %>" placeholder="Password" autocomplete="off"></td>
+    </div>
+</a>
+</script>
+
+
+<script type="text/template" id="direct_room_template">
+  <a class="direct_room_click" href="#/direct_room_<%%= id %>">
+    <div class="card mb-2">
+      <div style="width: 3%; float:left; margin-left: 0.7%; margin-top: 0.2%;" class="lock_icon"><img class="rounded-circle user_avatar" width="200%" src="<%%= avatar %>" alt="avatar"></div>
+      <div style="width: 93%; float:right;%;"><p class="user_name"><%%= user_name %></p></th>
+    </div>
+</a>
+</script>
+
+<script type="text/template" id="rooms-template">
+  <div id="rooms-container" class="container-fluid">
+
+    <div id="rooms" lass="card mb-2">
+    </div>
+    
+    <div id='join_new_btns'>
+      <table style="width:50%">
+        <td><button class="btn btn-outline-success" id="new_chat">New chat</button></td>
+        <td><button class="btn btn-outline-primary" id='new_message' style="display:none;">New message</button></td>
+      </table>
+    </div>
+
+    
+    <div id="new_message_input" style="display:none">
+      <input class="form-control" type="text" id="nickname_input" placeholder="Enter a nickname" autocomplete="off">
+    </div>
+    <div class="new-chat-input" style="display:none">
+        <table>
+          <tr>
+            <td><input class="form-control" type="text" id="room-name" placeholder="Chat name" autocomplete="off"></td>
+            <td><input class="form-control" type="password" id="room-password" placeholder="Chat password" autocomplete="off"></td>
+          </tr>
+        <table>
+      <p><input class="form-check-input" type="checkbox" id="private" class="is_private"> Private</p>
+    </div>
+  </div>
+</script>

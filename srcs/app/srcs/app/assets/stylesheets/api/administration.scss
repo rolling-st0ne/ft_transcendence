@@ -1,0 +1,76 @@
+// Place all the styles related to the api/admin controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+table#admin-table th {
+  vertical-align: top;
+  padding-top: 10px;
+}
+
+table#admin-table th#admin-nav {
+  padding-top: 20px;
+  padding-right: 20px;
+}
+
+button.nav-link {
+  text-align: left;
+  color: dimgray;
+}
+
+button.nav-link.active {
+  background-color: indigo!important;
+}
+
+button#admin-admins-tab.nav-link.active, button#admin-owners-tab.nav-link.active {
+  background-color: darkorange!important;
+  color: black;
+}
+
+button#admin-bans-tab.nav-link.active {
+  background-color: #dc3545!important;
+  color: black;
+}
+
+table#chats-table {
+  border: 5px transparent;
+}
+
+table#chats-table th, table#chats-table tr {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+#admin-table td {
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+}
+
+table #chats-table .chat-access-icon svg {
+  fill: white;
+  width: 15px;
+  padding: 1px;
+  display: block;
+}
+
+button.button-sm.button-refresh svg:hover {
+  fill: darkseagreen;
+}
+
+button.button-sm.button-ban svg:hover {
+  fill: #dc3545;
+}
+
+button.button-sm.button-check svg:hover {
+  fill: #28a745;
+}
+
+
+button.button-sm.button-unadmin svg:hover {
+  fill: #dc3545;
+}
+
+button.button-sm.button-admin svg:hover {
+  fill: darkorange;
+}
+

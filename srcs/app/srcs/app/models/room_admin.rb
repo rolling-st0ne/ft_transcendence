@@ -1,0 +1,2 @@
+class RoomAdmin < ApplicationRecord
+end

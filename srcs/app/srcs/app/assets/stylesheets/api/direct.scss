@@ -1,0 +1,22 @@
+.block_user svg {
+    fill: rgb(255, 209, 209);
+    width: 30px;
+    margin-left: 15px;
+    padding: 1px;
+    display: block;
+    position: relative;
+    left: 30%;
+}
+
+#direct_messages {
+    overflow-y: auto;
+    width: 90%;
+    height: 75%;
+    position: absolute;
+    border-radius: 5px;
+    left: 5%;
+}
+
+#direct_messages::-webkit-scrollbar {
+    display: none;
+}

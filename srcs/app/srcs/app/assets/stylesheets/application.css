@@ -1,0 +1,118 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active
+{
+    box-shadow: 0 0 0 30px black inset !important;
+    -webkit-text-fill-color: rgb(255, 255, 255) !important;
+}
+
+.home {
+    background-image: url(stars.gif);
+    position:absolute;
+    left: 0px;
+    width: 100%;
+    line-height: 20vh;
+    height: 92.5%;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.home-text {
+    margin-left: 5.5%;
+}
+
+body {
+    background: black;
+    color: rgb(236, 236, 236);
+}
+
+div.app_main {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.navbar  {
+    height: 65px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#navbar-right-items {
+    margin-top: 52px;
+}
+
+.navbar.navbar-expand {
+    background-color: #00000e;
+}
+
+.navbar.navbar-expand li a {
+    color: #ebebeb;
+}
+
+.navbar.navbar-expand li a:hover {
+    color: #b6bbff;
+}
+
+.user_icon {
+    background-size: cover;
+    display: block;
+    border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+}
+
+.user_icon_online {
+    border: 2px solid seagreen;
+}
+
+.user_icon_ingame {
+    border: 2px solid blueviolet;
+}
+
+.alerts-block {
+    position: absolute;
+    bottom: 1em;
+    left: 1em;
+}
+
+.alert {
+    font-size: 11px;
+    padding: 9px;
+    list-style: none;
+    margin-bottom: 0;
+    margin-top: .8em;
+    border: none;
+    width: fit-content;
+}
+
+svg {
+    fill: white;
+}
+
+button#button-signin svg {
+    display: inline-block;
+    width: 25px;
+}
+
+button#button-signin:hover svg {
+    fill: black;
+}

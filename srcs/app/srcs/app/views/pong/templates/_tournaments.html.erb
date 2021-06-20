@@ -1,0 +1,141 @@
+<script type="text/template" id="singletournament-template">
+  <td style="text-align: left">
+    <label>Tournament #<%%= id %></label>
+  </td>
+  <td><label><%%= status %></label></td>
+  <td><label><%%= new Date(start_date).toLocaleString() %></label></td>
+  <td><label><%%= new Date(end_date).toLocaleString() %></label></td>
+  <td><label><%%= tournament_users.length %></label></td>
+</script>
+
+<script type="text/template" id="tournaments-template">
+  <h1>Tournaments
+    <button type="button" class="button-sm button-refresh" id="refresh-button">
+      <%= show_svg('refresh.svg') %>
+    </button>
+    <button class="btn btn-outline-primary" id="create-button" style="display: none;">
+      Create tournament
+    </button>
+  </h1>
+  <table id="tournaments-table" border-spacing="20px" padding="0 2em 1em 0">
+    <tr>
+      <th style="text-align: left">Tournament</th>
+      <th>Status</th>
+      <th>Starts</th>
+      <th>Ends</th>
+      <th>Registred</th>
+    </tr>
+  </table>
+</script>
+
+<script type="text/template" id="tournament-create-modal-template">
+  <div class="modal fade show" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #090909">
+        <div class="modal-header" style="border-bottom-color: #111111;">
+          <h5 class="modal-title">New tournament</h5>
+          <button type="button" class="btn-close btn-close-white"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <label for="start-date" style="font-weight: bold">Start date</label>
+            <input type="datetime-local" class="form-control" id="start-date" required>
+          </p>
+          <p>
+            <label for="end-date" style="font-weight: bold">End date</label>
+            <input type="datetime-local" class="form-control" id="end-date" required>
+          </p>
+        </div>
+        <div class="modal-footer" style="border-top-color: #111111;">
+          <button type="button" class="btn btn-dark btn-cancel">Cancel</button>
+          <button type="button" class="btn btn-success btn-confirm">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+</script>
+
+<script type="text/template" id="tournamentpage-template">
+  <h1>
+    <button type="button" class="button-sm button-back" id="back-button" onclick="window.history.back();">
+      <%= show_svg('arrow-left.svg') %>
+    </button>
+    Tournament #<%%= id %> (<%%= status %>)
+    <button type="button" class="button-sm button-refresh" id="refresh-button">
+      <%= show_svg('refresh.svg') %>
+    </button>
+  </h1>
+
+  <h4>Starts</h4>
+  <p><%%= new Date(start_date) %></p>
+
+  <h4>Ends</h4>
+  <p><%%= new Date(end_date) %></p>
+
+  <div class="tournament-actions" <%%= status == "active" || status == "finished" || (!is_in_tournament && status == "closed") ? 'style="display: none;"' : '' %> >
+    <p>
+      <h4>Actions</h4>
+      <button class="btn btn-outline-success join-tournament-button" <%%= !is_in_tournament && status == "open" ? '' : 'style="display: none;"' %> >
+        Join tournament
+      </button>
+      <button class="btn btn-outline-danger leave-tournament-button" <%%= is_in_tournament && status != "active" ? '' : 'style="display: none;"' %> >
+        Leave tournament
+      </button>
+    </p>
+  </div>
+
+  <div class="tournament-administration" <%%= is_current_admin ? '' : 'style="display: none;"' %>>
+    <h4>Administration</h4>
+    <p>
+      <button class="btn btn-outline-primary begin-tournament-button" <%%= status == "closed" ? '' : 'style="display: none;"' %> >
+        Begin tournament
+      </button>
+      <button class="btn btn-outline-warning open-tournament-button" <%%= status == "closed" ? '' : 'style="display: none;"' %>>
+        Open registration
+      </button>
+      <button class="btn btn-outline-warning close-tournament-button" <%%= status == "open" ? '' : 'style="display: none;"' %>>
+        Close registration
+      </button>
+      <button class="btn btn-outline-success finish-tournament-button" <%%= status == "active" ? '' : 'style="display: none;"' %>>
+        Finish tournament
+      </button>
+      <button class="btn btn-outline-danger destroy-tournament-button" <%%= status != "finished" ? '' : 'style="display: none;"' %>>
+        Destroy tournament
+      </button>
+    </p>
+  </div>
+
+  <div id="registredusers"></div>
+</script>
+
+<script type="text/template" id="single-tournament-user-template">
+  <td>
+    <div class="admin-icon" <%%= user.admin ? '' : 'style="display:none"' %>>
+      <%= show_svg('user-astronaut.svg') %>
+    </div>
+  </td>
+  <td>
+    <img class="user_icon<%%= user.online ? ' user_icon_online' : '' %>"
+         width="30px" height="30px" src="<%%= user.avatar_url %>">
+  </td>
+  <td class="users-displayname"><label><%%= user.displayname %></label></td>
+  <td><label><%%= wins %></label></td>
+  <td><label><%%= loses %></label></td>
+  <td><label><%%= rating %></label></td>
+  <td><label><%%= stage %></label></td>
+</script>
+
+<script type="text/template" id="tournament-users-template">
+  <h4>Registred users (<%%= usercount %>)</h4>
+  <table id="tournament-users-table" border-spacing="20px" padding="0 2em 1em 0">
+    <tr>
+      <th></th><th></th>
+      <th class="users-displayname">Display name</th>
+      <th>Wins</th>
+      <th>Loses</th>
+      <th>Rating</th>
+      <th>Stage</th>
+    </tr>
+  </table>
+</script>

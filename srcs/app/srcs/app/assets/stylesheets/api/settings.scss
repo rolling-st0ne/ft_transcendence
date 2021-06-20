@@ -1,0 +1,81 @@
+// Place all the styles related to the settings controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+//<%= ('<input type="image" src="data:image/jpg;base64,%s">' % Base64.encode64(current_user.avatar)).html_safe %>
+
+input.form-control {
+  background-color: rgb(0, 0, 3);
+  color: white;
+  //box-shadow: inset 0px 0px 0px 0px red;
+  outline: none !important;
+}
+
+input.form-control:disabled {
+  border-color: rgb(180, 185, 252);
+  background-color: rgb(0, 0, 3);
+  color: white;
+}
+
+input.form-control:hover {
+  border-color: rgb(180, 185, 252);
+  background-color: rgb(0, 0, 3);
+  color: white;
+  background-clip: padding-box;
+}
+
+input.form-control:focus {
+  border-color: rgb(180, 185, 252);
+  background-color: rgb(0, 0, 3);
+  color: white;
+  box-shadow: inset 0 1px 1px rgba(180, 185, 252, 0.075), 0 0 15px rgba(180, 185, 252, 0.6);
+}
+
+//  fix email to fit in settings
+input#email.form-control {
+  width: 32ch;
+}
+
+.user_avatar {
+    border: 0;
+    border: none;
+    outline: none;
+}
+
+#upload_user_avatar {
+    border: 0;
+    border: none;
+    outline: none;
+    background-color: rgb(0, 0, 3);
+    color: white;
+}
+
+.upload_user_avatar {
+    border: 0;
+    border: none;
+    outline: none;
+    background-color: rgb(0, 0, 3);
+    color: white;
+    display:  none; /* Hides input box*/
+}
+
+th.edit_url .upload_user_avatar {
+    border: 0;
+    border: none;
+    outline: none;
+    background-color: rgb(0, 0, 3);
+    color: white;
+    display: block; /* Shows input text box when .editing*/
+}
+
+table.settings th {
+  padding-right: 20px;
+  vertical-align: top;
+}
+
+table.settings input.form-control {
+  border: none;
+}
+
+input.input-otp {
+  width: fit-content;
+}

@@ -1,0 +1,24 @@
+<script type="text/template" id="direct_message_template">
+  <div class="message" data-user-id="<%%= user_id %>">
+    <table>
+      <div>
+        <tr style="vertical-align:top;"><th><img class="user_icon" width="35px" height="35px" src="<%%= avatar %>" style="margin-bottom: 10px"></th>
+        <th id="user-name"><%%= displayname %>:</th>
+      </div>
+      <th id="message-content"> <%%= content %> </th></tr>
+    </table>
+  </div>
+</script>
+
+<script type="text/template" id="direct_messages_template">
+    <table>
+        <th><h1 id="receiver_name"></h1></th>
+        <th><div style="width: 7%; float:left;" class="block_user"><%= show_svg('block.svg') %></div></th>
+    </table>
+    <br>
+    <div id="direct_messages">
+    </div>
+    <div id="div-chat-input">
+        <input type="text" class="form-control" id="chat-input" autocomplete="off"/>
+    </div>
+</script>

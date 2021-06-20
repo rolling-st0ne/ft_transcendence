@@ -1,0 +1,174 @@
+<script type="text/template" id="admin-singleuser-template">
+  <td><div class="admin-icon" <%%= admin ? '' : 'style="display:none"' %>>
+    <%= show_svg('user-astronaut.svg') %></div>
+  </td>
+  <td>
+    <img class="user_icon<%%= online ? ' user_icon_online' : '' %>" width="30px" height="30px" src="<%%= avatar_url %>">
+  </td>
+  <td><label><%%= id %></label></td>
+  <td><label><%%= nickname %></label></td>
+  <td><label><%%= email %></label></td>
+  <td><input class="form-control displayname" value="<%%= displayname %>"
+             style="text-align: center;width: 17ch;border: none; padding: 1px; margin-left: 10px; margin-right: 10px;"></td>
+  <td>
+    <button type="button" title="Admin user" class="button-sm button-admin confirm-admin"
+            <%%= current_owner && !admin ? '' : 'style="display: none;"' %>>
+      <%= show_svg('user-astronaut.svg') %>
+    </button>
+    <button type="button" title="Unadmin user" class="button-sm button-unadmin confirm-admin"
+            <%%= current_owner && admin ? '' : 'style="display: none;"' %>>
+      <%= show_svg('user-slash.svg') %>
+    </button>
+    <button type="button" title="Ban user" class="button-sm button-ban confirm-ban"
+            <%%= !banned ? '' : 'style="display: none;"' %>>
+      <%= show_svg('ban.svg') %>
+    </button>
+    <button type="button" title="Unban user" class="button-sm button-check confirm-ban"
+            <%%= banned ? '' : 'style="display: none;"' %>>
+      <%= show_svg('check.svg') %>
+    </button>
+  </td>
+</script>
+
+<script type="text/template" id="admin-userlist-template">
+  <h1><%%= listname %>
+    <button type="button" class="button-sm button-refresh" id="refresh-button" title="Refresh">
+    <%= show_svg('refresh.svg') %></button></h1>
+  <table id="users-table" border-spacing="20px" padding="0 2em 1em 0">
+    <tr><th></th><th></th><th>Id</th><th>Nickname</th><th>Email</th><th>Display name</th><th>Actions</th></tr>
+  </table>
+</script>
+
+<script type="text/template" id="admin-singlechat-template">
+  <td>
+    <div class="chat-access-icon" <%%= private ? '' : 'style="display:none"' %>>
+      <%= show_svg('private.svg') %>
+    </div>
+  </td>
+  <td>
+    <div class="chat-access-icon" <%%= password_present ? '' : 'style="display:none"' %>>
+      <%= show_svg('lock.svg') %>
+    </div>
+    <div class="chat-access-icon" <%%= password_present ? 'style="display:none"' : '' %>>
+      <%= show_svg('lock-open.svg') %>
+    </div>
+  </td>
+  <td><label><%%= id %></label></td>
+  <td><label><%%= name %></label></td>
+  <td><label><%%= owner_name %></label></td>
+  <td>
+    <button type="button" title="Ban user" class="button-sm button-ban confirm-action">
+      <%= show_svg('destroy.svg') %>
+    </button>
+  </td>
+  <td>
+    <button id="<%%= id %>" type="button" title="Add/Remove" class="button-sm add_remove_admin">
+      <svg viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="60" r="50"/>
+    </svg>
+    </button>
+    <input id="add_remove_admin_input_<%%= id %>" type="text" style="display:none" class="form-control" autocomplete="off"\>
+  </td>
+</script>
+
+<script type="text/template" id="admin-chatlist-template">
+  <h1>Chatrooms <button type="button" class="button-sm button-refresh" id="refresh-button">
+    <%= show_svg('refresh.svg') %></button>
+  </h1>
+  <table id="chats-table" padding="0 2em 1em 0">
+    <tr><th></th><th></th><th>Id</th><th>Name</th><th>Owner</th><th>Remove chat</th><th>Add/Remove admin</th></tr>
+  </table>
+</script>
+
+<script type="text/template" id="admin-template">
+  <table id="admin-table">
+    <tr>
+      <th id="admin-nav">
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <button onclick="location.href='#/admin';" class="nav-link" id="admin-users-tab" type="button" role="tab">All Users</button>
+          <button onclick="location.href='#/admin/chats';" class="nav-link" id="admin-chats-tab" type="button" role="tab">Chatrooms</button>
+          <hr>
+          <button onclick="location.href='#/admin/admins';" class="nav-link" id="admin-admins-tab" type="button" role="tab">Admins</button>
+          <button onclick="location.href='#/admin/owners';" class="nav-link" id="admin-owners-tab" type="button" role="tab">Owners</button>
+          <hr>
+          <button onclick="location.href='#/admin/bans';" class="nav-link" id="admin-bans-tab" type="button" role="tab">Banlist</button>
+        </div>
+      </th>
+      <th id="admin-content"></th>
+    </tr>
+  </table>
+</script>
+
+<script type="text/template" id="admin-modal-ban-confirm-template">
+  <div class="modal fade show" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #090909">
+        <div class="modal-header" style="border-bottom-color: #111111;">
+          <h5 class="modal-title">You are about to <%%= banned ? 'unban' : 'ban' %>
+            <b>@<%%= nickname %></b></h5>
+          <button type="button" class="btn-close btn-close-white"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <label for="ban-reason" style="font-weight: bold">Reason for ban</label>
+            <input type="text" class="form-control" id="ban-reason"
+                   value="<%%= ban_reason %>"
+                   placeholder="no reason provided" <%%= banned ? 'disabled' : '' %>>
+          </p>
+        </div>
+        <div class="modal-footer" style="border-top-color: #111111;">
+          <button type="button" class="btn btn-dark btn-cancel">Cancel</button>
+          <button type="button" class="btn btn-<%%= banned ? 'success' : 'danger' %> btn-confirm">
+            <%%= banned ? 'Revoke Ban' : 'Ban' %></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+</script>
+
+<script type="text/template" id="admin-modal-admin-confirm-template">
+  <div class="modal fade show" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #090909">
+        <div class="modal-header" style="border-bottom-color: #111111;">
+          <h5 class="modal-title"><%%= admin ? 'Revoke' : 'Grant' %> admin rights</h5>
+          <button type="button" class="btn-close btn-close-white"></button>
+        </div>
+        <div class="modal-body">
+          <p>You are about to make <b>@<%%= nickname %></b> <%%= admin ? 'a common user' : 'an admin' %></p>
+          <p>Are you sure about that?</p>
+        </div>
+        <div class="modal-footer" style="border-top-color: #111111;">
+          <button type="button" class="btn btn-dark btn-cancel">Cancel</button>
+          <button type="button" class="btn btn-<%%= admin ? 'danger' : 'warning' %> btn-confirm">
+            <%%= admin ? 'Demote' : 'Promote' %></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+</script>
+
+<script type="text/template" id="admin-destroy-chat-modal-template">
+  <div class="modal fade show" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #090909">
+        <div class="modal-header" style="border-bottom-color: #111111;">
+          <h5 class="modal-title">Destroy channel</h5>
+          <button type="button" class="btn-close btn-close-white"></button>
+        </div>
+        <div class="modal-body">
+          <p>You are about to destroy <%%= private ? 'private' : '' %> channel <b>#<%%= name %></b></p>
+          <p>Are you sure about that?</p>
+        </div>
+        <div class="modal-footer" style="border-top-color: #111111;">
+          <button type="button" class="btn btn-dark btn-cancel">Cancel</button>
+          <button type="button" class="btn btn-danger btn-confirm">Destroy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+</script>
+

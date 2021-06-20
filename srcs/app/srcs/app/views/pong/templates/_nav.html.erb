@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="#/index">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#/rooms">Chat</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#/users">Ladder</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#/tournaments">Tournaments</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#/guilds">Guilds</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#/wars">Wars</a>
+    </li>
+    <% if current_user.owner? || current_user.admin? %>
+      <li class="nav-item">
+        <a class="nav-link" href="#/admin">Admin</a>
+      </li>
+    <% end %>
+    <li class="nav-item">
+      <a class="nav-link" href="#/settings">Settings</a>
+    </li>
+  </ul>
+
+  <ul id="navbar-right-items" class="navbar-nav ms-auto mb3 mb-lg-0">
+    <li class="nav-item">
+      <% begin %>
+        <%= link_to '#/users/' + current_user.id.to_s do %>
+          <%= image_tag current_user.avatar_url, href: "#/settings", size: "40x40", class: "user_icon navbar_user_icon"%><br></br>
+        <% end %>
+      <% rescue %>
+        <%= link_to '#/users/' + current_user.id.to_s do %>
+          <%= image_tag current_user.avatar_default_url, href: "#/settings",  size: "40x40", class: "user_icon"%><br></br>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href=<%= '#/users/' + current_user.id.to_s %>><%= current_user.nickname %></a>
+    </li>
+    <li class="nav-item">
+      <%= link_to "Sign out", destroy_user_session_path, class: "nav-link", :method => :delete %>
+    </li>
+  </ul>
+</nav>

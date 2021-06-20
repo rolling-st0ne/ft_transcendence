@@ -1,0 +1,64 @@
+#messages {
+    overflow-y: auto;
+    width: 90%;
+    position: absolute;
+    border-radius: 5px;
+    left: 5%;
+}
+
+.messages_admin {
+    height: 73%;
+}
+
+.messages_user {
+    height: 74.5%;
+}
+
+#messages::-webkit-scrollbar {
+    display: none;
+}
+
+#div-chat-input {
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    top: 90%;
+}
+
+.message {
+    width: 97%;
+    word-wrap: break-word;
+}
+
+
+#message-content {
+    width: 98%;
+    position: relative;
+    left: 1%;
+    word-break:break-all;
+}
+
+#user-name {
+    position: relative;
+    left: 0.5%;
+    top: 0.5%;
+}
+
+#block_user_room svg {
+    fill: rgb(255, 209, 209);
+    width: 30px;
+    margin-left: 15px;
+    padding: 1px;
+    display: block;
+    position: relative;
+    left: 30%;
+    cursor: pointer;
+}
+
+#make_adm {
+    cursor: pointer;
+}
+
+#change_password {
+    cursor: pointer;
+}

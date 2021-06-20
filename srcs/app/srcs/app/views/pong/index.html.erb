@@ -1,0 +1,37 @@
+<% unless user_signed_in? %>
+  <%= render 'pong/templates/login' %>
+<% else %>
+  <% unless user_validated_2fa? %>
+    <%= render 'pong/templates/2fa' %>
+  <% else %>
+    <%= render 'pong/templates/nav' %>
+    <%= render 'pong/templates/home' %>
+    <%= render 'pong/templates/pong' %>
+    <%= render 'pong/templates/settings' %>
+    <%= render 'pong/templates/rooms' %>
+    <%= render 'pong/templates/messages' %>
+    <%= render 'pong/templates/users' %>
+    <%= render 'pong/templates/admin' %>
+    <%= render 'pong/templates/guilds' %>
+    <%= render 'pong/templates/wars' %>
+    <%= render 'pong/templates/direct' %>
+    <%= render 'pong/templates/tournaments' %>
+
+    <table style="width:100%">
+    <tr>
+      <th valign="top" align="left">
+        <div class="app_main">Loading SPA</div>
+      </th>
+    </tr>
+    </table>
+  <% end %>
+<% end %>
+
+
+<div class="alerts-block">
+  <div id="app-alerts"></div>
+  <% flash.reverse_each do |type, msg| %>
+    <%= content_tag :li, class: "alert alert-#{%w[success notice].include?(type) ? 'success' : type}" do %>
+      <%= msg %><% end %>
+  <% end %>
+</div>

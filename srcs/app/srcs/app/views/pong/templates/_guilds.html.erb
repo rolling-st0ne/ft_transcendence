@@ -1,0 +1,210 @@
+<script type="text/template" id="guild-template">
+  <div class="row" style="max-width: 1000px; min-width: 300px">
+    <div class="col-3"><%%=`<a class="link-light" href="#/guilds/${id}">`%><%%= name %></a> [<%%=anagram %>]</div>
+    <div class="col-1"><%%= score %></div>
+    <div class="col-2"><%%=`<a class="link-light" href="#/users/${master_id}">`%><%%= master_name %></a></div>
+    <div class="col-3">
+      <span <%%=active_war ? '' : 'style="display:none"' %>><%%=`<a class="link-light" href="#/wars/${active_war[0]}">`%>current</a>: with <%%= active_war[1] == name ? active_war[2] : active_war[1] %>,</span>
+      <span <%%=active_war ? 'style="display:none"' : '' %>>current: none, </span>
+      <%%=`<a class="link-light" href="#/guilds/${id}/wars">`%>all</a>: <%%=wars_counter %>
+    </div>
+    <div class="col-2" <%%=current_user_role == 'other-free-master' && !active_war ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-light options-button" id="war-button">
+        declare war
+      </button>
+    </div>
+    <div class="col-1" <%%=current_user_role == 'member' || current_user_role == 'officer' || current_user_role == 'master' ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-danger options-button" id="leave-button">
+        leave
+      </button>
+    </div>
+    <div class="col-3" <%%=current_user_role == 'invited' ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-light options-button join" id="accept-button">
+        accept invite
+      </button>
+      <button type="button" class="btn btn-danger options-button" id="decline-button">
+        decline
+      </button>
+    </div>
+    <div class="col-2" <%%=current_user_role == 'seeker' ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-danger options-button" id="cancel-button">
+        cancel request
+      </button>
+    </div>
+    <div class="col-2" <%%=current_user_role == 'none' ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-light options-button join" id="join-button">
+        send request
+      </button>
+    </div>
+  </div>
+</script>
+
+<script>
+    function openForm() {
+        document.getElementById("newGuildForm").style.display = "block"; }
+    function closeForm() {
+        document.getElementById("newGuildForm").style.display = "none";
+    }
+</script>
+
+<script type="text/template" id="guilds-template">
+  <h1>Guilds
+    <button type="button" class="button-sm" id="refresh-button">
+    <%= show_svg('refresh.svg') %></button>
+  </h1>
+    <div class="row" style="max-width: 1000px; min-width: 300px">
+      <div class="col-3">Name</div>
+      <div class="col-1">Score</div>
+      <div class="col-2">Master</div>
+      <div class="col-3">Wars</div>
+    </div>
+</script>
+
+<script type="text/template" id="guild-invite-template">
+  <div class="row" style="max-width: 1000px; min-width: 300px">
+    <div class="col-3"><%%=`<a class="link-light" href="#/guilds/${id}">`%><%%= name %></a> [<%%=anagram %>]</div>
+    <div class="col-1"><%%= score %></div>
+    <div class="col-2"><%%=`<a class="link-light" href="#/users/${master_id}">`%><%%= master_name %></a></div>
+    <div class="col-3">
+      <span <%%=active_war ? '' : 'style="display:none"' %>><%%=`<a class="link-light" href="#/wars/${active_war[0]}">`%>current</a>: with <%%= active_war[1] == name ? active_war[2] : active_war[1] %>,</span>
+      <span <%%=active_war ? 'style="display:none"' : '' %>>current: none, </span>
+      <%%=`<a class="link-light" href="#/guilds/${id}/wars">`%>all</a>: <%%=wars_counter %>
+    </div>
+  <div class="col-3">
+  <button type="button" class="btn btn-light options-button join" id="accept-button">
+    accept invite
+  </button>
+  <button type="button" class="btn btn-danger options-button" id="decline-button">
+    decline
+  </button>
+  </div>
+  </div>
+</script>
+
+<script type="text/template" id="guild-invites-template">
+  <h1>Guild invitations
+    <button type="button" class="button-sm" id="refresh-button">
+      <%= show_svg('refresh.svg') %></button>
+  </h1>
+  <div class="row" style="max-width: 1000px; min-width: 300px">
+    <div class="col-3">Guild name</div>
+    <div class="col-1">Score</div>
+    <div class="col-2">Master</div>
+    <div class="col-3">Wars</div>
+  </div>
+</script>
+
+
+<script type="text/template" id="guilds-template-create">
+    <button class="open-button" onclick="openForm()">Create Guild</button>
+    <div class="form-popup" id="newGuildForm">
+      <form id="create-guild" class="form-container">
+        <input type="text" class="form-control" id="newGuildName" placeholder="The Guild Name" pattern="[A-Za-z ]{3,20}" required="required" title="Guild Name can only have 3-20 letters, no special symbols allowed"><br>
+        <button type="submit" class="btn btn-success">Create Guild</button>
+        <button type="button" class="btn btn-danger" onclick="closeForm()">Cancel</button>
+      </form>
+    </div>
+  <h1>Guilds <button type="button" class="button-sm" id="refresh-button">
+    <%= show_svg('refresh.svg') %></button></h1>
+  <div class="row" style="max-width: 1000px; min-width: 300px">
+    <div class="col-3">Name</div>
+    <div class="col-1">Score</div>
+    <div class="col-2">Master</div>
+    <div class="col-3">Wars</div>
+  </div>
+</script>
+
+<script type="text/template" id="guild-profile-template">
+  <h1><button type="button" class="button-sm button-back" id="back-button"
+              onclick="window.history.back();">
+    <%= show_svg('arrow-left.svg') %>
+  </button>
+    <%%= name %>&nbsp;<span style="color:grey;font-size: 30px">[<%%= anagram%>]</span>
+    <button type="button" class="button-sm button-refresh" id="refresh-button">
+      <%= show_svg('refresh.svg') %>
+    </button>
+  </h1>
+  <div class="row" style="margin-bottom: 20px">
+    <div class="col-2" <%%=current_user_role == 'other-free-master' && !active_war ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-light options-button" id="war-button">
+        declare war
+      </button>
+    </div>
+    <div class="col-1" <%%=current_user_role == 'member' || current_user_role == 'officer' || current_user_role == 'master' ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-danger options-button" id="leave-button">
+        leave
+      </button>
+    </div>
+    <div class="col-3" <%%=current_user_role == 'invited' ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-light options-button join" id="accept-button">
+        accept invite
+      </button>
+      <button type="button" class="btn btn-danger options-button" id="decline-button">
+        decline
+      </button>
+    </div>
+    <div class="col-2" <%%=current_user_role == 'seeker' ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-danger options-button" id="cancel-button">
+        cancel request
+      </button>
+    </div>
+    <div class="col-2" <%%=current_user_role == 'none' ? '' : 'style="display:none"' %>>
+      <button type="button" class="btn btn-light options-button join" id="join-button">
+        send request
+      </button>
+    </div>
+    <div class="col-2" <%%=current_user_role == 'master' ? '' : 'style="display:none"' %>>
+      <button  id="delete-button" type="button" class="btn btn-danger options-button">
+      Delete guild
+      </button>
+    </div>
+  </div>
+  <div class="row" <%%=current_user_role == 'master' ? 'style="margin-left: 0px"' : 'style="display:none"' %>>
+  Anagram:&nbsp;<input type="text" class="form-control" id="anagram"
+           value="<%%= anagram %>"
+           style="width: 6ch; background-color: #00000e; color:white; padding: 1px;">
+    <!--<pattern="[A-Za-z0-9]{2,5}" required="required" title="Anagram can only have 2-5 letters, no whitespaces allowed"></pattern>-->
+  </div>
+  <div class="row"><a>Current score:&nbsp;<%%= score %></a></div>
+  <div class="row"><div class="col-10">Master: <%%=`<a class="link-light" href="#/users/${master.id}">`%><%%= master.displayname %></a></div></div>
+  <div class="row"><div class="col-10"><%%=`<a class="link-light" href="#/guilds/${id}/members">All members</a>`%> (<%%=members_counter %>)</div></div>
+  <div class="row">
+    <div>
+      <%%=`<a class="link-light" href="#/guilds/${id}/wars">War history</a>`%>:
+      <span <%%=active_war ? '' : 'style="display:none"' %>><%%=`<a class="link-light" href="#/wars/${active_war[0]}">`%>current</a>: with <%%= active_war[1] == name ? active_war[2] : active_war[1] %>,</span>
+      <span <%%=active_war ? 'style="display:none"' : '' %>>current: none, </span>
+      all: <%%=wars_counter %>
+    </div>
+  </div>
+  <div class="row" <%%=current_user_role == 'master' || current_user_role == 'officer' ? '' : 'style="display:none"' %>>
+    <div><%%=`<a class="link-light" href="#/guilds/${id}/requests">join requests</a>`%> (<%%=join_requests_counter %>)</div></div>
+  <div class="row" <%%=current_user_role == 'master' || current_user_role == 'officer' ? '' : 'style="display:none"' %>><%%=`<a class="link-light" href="#/users_not_in_guild">invite users</a>`%></div>
+  <div class="row" <%%=current_user_role == 'master' ? '' : 'style="display:none"' %>>
+    <div><%%=`<a class="link-light" href="#/guilds/${id}/war_invites">war invites from other guilds</a>`%> (<%%=war_invites_counter%>)</div></div>
+  <div class="row" <%%=current_user_role == 'master' ? '' : 'style="display:none"' %>>
+    <div><%%=`<a class="link-light" href="#/guilds/${id}/war_requests">war requests sent by you</a>`%> (<%%=war_requests_counter%>)</div></div>
+</script>
+
+<script type="text/template" id="delete-guild-modal-template">
+  <div class="modal fade show" aria-modal="true" role="dialog" style="display: block;">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #090909">
+        <div class="modal-header" style="border-bottom-color: #111111;">
+          <h5 class="modal-title">
+            You are about to delete your guild <%%= name %>
+          </h5>
+        </div>
+        <div class="modal-body">
+          <p>
+            The action cannot be undone
+          </p>
+        </div>
+        <div class="modal-footer" style="border-top-color: #111111;">
+          <button type="button" class="btn btn-dark btn-cancel">Cancel</button>
+          <button type="button" class="btn btn-danger btn-confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade show"></div>
+</script>

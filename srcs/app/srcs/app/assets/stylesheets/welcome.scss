@@ -1,0 +1,39 @@
+// Place all the styles related to the welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+
+.btn {
+    border-radius:                    0px;
+    -webkit-border-radius:            0px;
+    -moz-border-radius:               0px;
+}
+
+.navbar.navbar-expand-lg li a {
+    color: rgb(235, 235, 235);
+}
+
+.navbar.navbar-expand-lg li a:hover {
+    color: rgb(182, 187, 255);
+}
+
+.navbar.navbar-expand-lg {
+    background-color: #00000e;
+}
+
+
+.login-button-container
+{
+    height: 200px;
+    position: relative;
+}
+
+.login-button-vertical-center
+{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}

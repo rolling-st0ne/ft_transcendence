@@ -1,0 +1,69 @@
+// Place all the styles related to the api/users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+button.button-sm {
+  background: none;
+  border: none;
+  margin: 5px;
+  display: inline-flex;
+}
+
+button.button-sm svg {
+  width: 20px;
+  height: 20px;
+}
+
+button.button-back svg {
+  width: 25px;
+  height: 25px;
+}
+
+button.button-back svg:hover {
+  fill: royalblue;
+}
+
+table #users-table th, table #users-table tr {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
+th.users-displayname, td.users-displayname {
+  text-align: left;
+  padding-left: 10px;
+}
+
+table #users-table img {
+  margin: 2px;
+}
+
+.admin-icon svg {
+  fill: darkorange;
+  display: block;
+  padding: 1.5px;
+  width: 25px;
+}
+
+.card {
+  border-color: #202020;
+  background: transparent;
+}
+
+.list-group-item, .card-header {
+  background-color: black;
+  color: inherit;
+}
+
+.list-group-item svg {
+  width: 25px;
+  height: 25px;
+}
+
+.bg-admin {
+  background-color: darkorange;
+}
+
+.bg-owner {
+  background-color: gold;
+}
